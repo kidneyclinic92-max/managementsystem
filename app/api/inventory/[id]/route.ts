@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { getConnection } from "@/lib/db";
 import { cookies } from "next/headers";
 import { getUserFromToken } from "@/lib/auth";
@@ -6,10 +6,11 @@ import sql from 'mssql';
 
 // GET /api/inventory/[id] - Get single inventory item
 export async function GET(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const cookieStore = await cookies();
     const token = cookieStore.get("auth_token")?.value;
     if (!token) {
@@ -23,7 +24,7 @@ export async function GET(
 
     const pool = await getConnection();
     const result = await pool.request()
-      .input('id', sql.UniqueIdentifier, params.id)
+      .input('id', sql.UniqueIdentifier, id)
       .query(`
         SELECT 
           i.*,
@@ -84,10 +85,11 @@ export async function GET(
 
 // PUT /api/inventory/[id] - Update inventory item
 export async function PUT(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const cookieStore = await cookies();
     const token = cookieStore.get("auth_token")?.value;
     if (!token) {
@@ -126,7 +128,7 @@ export async function PUT(
 
       // Update inventory item
       const updateResult = await request_query
-        .input('id', sql.UniqueIdentifier, params.id)
+        .input('id', sql.UniqueIdentifier, id)
         .input('name', sql.NVarChar, body.name)
         .input('sku', sql.NVarChar, body.sku)
         .input('barcode', sql.NVarChar, body.barcode || null)
@@ -239,10 +241,11 @@ export async function PUT(
 
 // DELETE /api/inventory/[id] - Delete inventory item
 export async function DELETE(
-  request: Request,
-  { params }: { params: { id: string } }
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params;
     const cookieStore = await cookies();
     const token = cookieStore.get("auth_token")?.value;
     if (!token) {
@@ -256,7 +259,7 @@ export async function DELETE(
 
     const pool = await getConnection();
     const result = await pool.request()
-      .input('id', sql.UniqueIdentifier, params.id)
+      .input('id', sql.UniqueIdentifier, id)
       .query('DELETE FROM inventory_items WHERE id = @id');
 
     return NextResponse.json({ success: true });
