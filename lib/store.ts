@@ -58,7 +58,8 @@ export function useInventoryStore() {
     }
   }, [isLoaded]);
 
-  const addItem = async (item: Omit<InventoryItem, "id" | "createdAt" | "updatedAt">) => {
+  // Accept partials since the UI form sends a subset of fields; API validates defaults.
+  const addItem = async (item: Partial<Omit<InventoryItem, "id" | "createdAt" | "updatedAt">>) => {
     try {
       const res = await fetch("/api/inventory", {
         method: "POST",
