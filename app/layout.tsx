@@ -18,6 +18,10 @@ export const metadata: Metadata = {
   description: "Comprehensive inventory management solution for tracking products, orders, and analytics",
 };
 
+// Force dynamic rendering to avoid prerender errors on client-driven routes
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default function RootLayout({
   children,
 }: Readonly<{
