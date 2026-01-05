@@ -34,12 +34,12 @@ export default function ReplenishmentPage() {
     setRequests([...requests, ...newRequests]);
   };
 
-  const handleCreatePurchaseOrder = (request: ReplenishmentRequest) => {
+  const handleCreatePurchaseOrder = async (request: ReplenishmentRequest) => {
     const item = inventory.find((i) => i.id === request.itemId);
     if (!item) return;
 
     // Create purchase order
-    const purchaseOrder = addOrder({
+    const purchaseOrder = await addOrder({
       type: "purchase",
       status: "pending",
       items: [
