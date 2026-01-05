@@ -1,0 +1,38 @@
+{
+  "expo": {
+    "name": "WareHouse Vendor",
+    "slug": "warehouse-vendor-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "resizeMode": "contain",
+      "backgroundColor": "#6366f1"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.warehouse.vendor"
+    },
+    "android": {
+      "package": "com.warehouse.vendor",
+      "permissions": [
+        "CAMERA",
+        "android.permission.CAMERA"
+      ]
+    },
+    "web": {},
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow access to camera for barcode scanning"
+        }
+      ],
+      "expo-router"
+    ],
+    "scheme": "warehouse-vendor"
+  }
+}

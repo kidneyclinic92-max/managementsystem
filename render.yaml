@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: inventorymanagementsystem
+    env: node
+    plan: free
+    buildCommand: npm ci && npm run build
+    startCommand: npm run start
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: NODE_VERSION
+        value: "20"
+      - key: NEXT_PUBLIC_APP_URL
+        value: https://inventorymanagementsystem.onrender.com
+      - key: AUTH_SECRET
+        generateValue: true
+      - key: AZURE_SQL_CONNECTION_STRING
+        sync: false
+      - key: ZIIZII_API_URL
+        value: https://gsc.ziizii.io/api
+      - key: ZIIZII_USERNAME
+        sync: false
+      - key: ZIIZII_PASSWORD
+        sync: false
+      - key: ZIIZII_API_KEY
+        sync: false
+
