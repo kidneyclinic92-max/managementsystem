@@ -130,7 +130,15 @@ export default function InventoryPage() {
       if (editingItem) {
         await updateItem(editingItem.id, formData);
       } else {
-        await addItem(formData);
+        // Supply required fields expected by InventoryItem when creating new records
+        await addItem({
+          ...formData,
+          reservedQuantity: 0,
+          availableQuantity: formData.quantity,
+          reorderPoint: formData.minStock,
+          reorderQuantity: formData.maxStock,
+          unitOfMeasure: "pcs",
+        });
       }
       handleCloseModal();
     } catch (error: any) {
