@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -H 0.0.0.0",
+    "dev": "TURBOPACK=0 next dev -H 0.0.0.0",
     "build": "TURBOPACK=0 NEXT_DISABLE_LIGHTNINGCSS=1 next build",
-    "start": "next start -p $PORT",
+    "start": "TURBOPACK=0 NEXT_DISABLE_LIGHTNINGCSS=1 next start -p $PORT",
     "lint": "eslint"
   },
   "dependencies": {
