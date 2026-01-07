@@ -1,6 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-
 name: Build and deploy Node.js app to Azure Web App - inventorywebapp
 
 on:
@@ -25,16 +22,16 @@ jobs:
           node-version: '20.x'
           cache: 'npm'
 
+      # 🔴 FIX HERE
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --include=optional
 
-      # Disable Turbopack to avoid LightningCSS native issues
       - name: Build Next.js app
         run: npm run build
         env:
-          NEXT_DISABLE_TURBOPACK: 1
+          TURBOPACK: 0
+          NEXT_DISABLE_LIGHTNINGCSS: 1
 
-      # Prepare deployment artifact
       - name: Prepare deployment package
         run: |
           mkdir deploy
@@ -66,7 +63,6 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_8629C4C6B9F648AA91A33B58575A0DDD }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_45402637D67041BB8148A8F6B73D6013 }}
 
-      # 🔴 CRITICAL FIX: Disable Oryx build on Azure
       - name: Configure App Settings
         uses: azure/appservice-settings@v1
         with:
@@ -74,18 +70,9 @@ jobs:
           slot-name: Production
           app-settings-json: |
             [
-              {
-                "name": "SCM_DO_BUILD_DURING_DEPLOYMENT",
-                "value": "false"
-              },
-              {
-                "name": "WEBSITE_RUN_FROM_PACKAGE",
-                "value": "1"
-              },
-              {
-                "name": "NODE_ENV",
-                "value": "production"
-              }
+              { "name": "SCM_DO_BUILD_DURING_DEPLOYMENT", "value": "false" },
+              { "name": "WEBSITE_RUN_FROM_PACKAGE", "value": "1" },
+              { "name": "NODE_ENV", "value": "production" }
             ]
 
       - name: Deploy to Azure Web App
